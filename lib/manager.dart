@@ -42,6 +42,8 @@ class ExerciseManager {
     return t != null ? List.unmodifiable(t) : null;
 }
 
+int get score => _score;
+
   void setData(List<String> data) {
     _originalSentences = [...data];
     _sentences = [...data]..shuffle();
@@ -126,6 +128,7 @@ class ExerciseManager {
     // this test is just extra safety:
     if (t == null || w == null) return false;
     bool result = [for (int i=0; i<t.length; i++) w[t[i]] == w[i]].every((t) => t);
+    if (result) _score++;
     return result;
   }
 

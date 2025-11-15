@@ -7,7 +7,17 @@ import 'manager.dart';
 // GUI for a reading exercise app.
 // The core logic is pure dart, imported from manager.dart.
 
-enum Status { loading, idle, ready, checking, correct, incorrect, ended }
+// These are the stages of
+enum Status {
+  loading,
+  title,
+  idle,
+  ready,
+  checking,
+  correct,
+  incorrect,
+  ended,
+  }
 
 class WordCard extends StatelessWidget {
   final String word;
@@ -47,7 +57,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Reading App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.teal,
@@ -83,6 +93,8 @@ class _HomePageState extends State<HomePage> {
   final AudioPlayer _sentence = AudioPlayer()
     ..setReleaseMode(ReleaseMode.stop);
 
+  ColorScheme get colorScheme => Theme.of(context).colorScheme;
+
   @override
   void initState() {
     super.initState();
@@ -102,8 +114,12 @@ class _HomePageState extends State<HomePage> {
     if (!mounted) return;
     _playSentence();
     setState(() {
-      status = Status.idle;
+      status = Status.title;
     });
+  }
+
+  _start() {
+    setState(() => status = Status.idle);
   }
 
   List<Widget> _createWordCards(List<int> ids) {
@@ -175,12 +191,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     final sb = _manager.sourceBank;
     final tb = _manager.targetBank;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: Padding(
@@ -194,7 +209,34 @@ class _HomePageState extends State<HomePage> {
                 child: Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: sb != null ? _createWordCards(sb) : [],
+                  children: switch(status) {
+                    Status.loading
+                      => <Widget>[
+                        SizedBox(height: 32, width: 32,), CircularProgressIndicator(),
+                      ],
+                    Status.title
+                      => <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Reading Exercise",
+                          style: TextStyle(
+                            fontSize: 36,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                      TextButton(onPressed: _start(), child: Text("Start"),)
+                    ],
+                    Status.ended
+                      => [],
+                    Status.idle ||
+                    Status.ready ||
+                    Status.checking ||
+                    Status.correct ||
+                    Status.incorrect
+                      => sb != null ? _createWordCards(sb) : [],
+                  },
                 ),
               ),
             ),
@@ -205,7 +247,13 @@ class _HomePageState extends State<HomePage> {
                   spacing: 8,
                   runSpacing: 8,
                   children: switch(status) {
-                    Status.loading ||
+                    Status.loading || Status.title
+                      => <Widget>[
+                        Image.asset(
+                          'images/reading_girl.png',
+                          width: 180,
+                        ),
+                      ],
                     Status.ended
                       => [],
                     Status.idle ||
@@ -218,14 +266,24 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Row(
+            switch (status) {
+              Status.loading ||
+              Status.title ||
+              Status.ended
+                => const SizedBox.shrink(),
+              Status.idle ||
+              Status.ready ||
+              Status.checking ||
+              Status.correct ||
+              Status.incorrect
+                => Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  "Score: 3",
+                  "Score: ${_manager.score}",
                   style: TextStyle(
                     fontSize: 24,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: colorScheme.onSurface,
                     ),
                 ),
                 IconButton(
@@ -235,24 +293,24 @@ class _HomePageState extends State<HomePage> {
                   tooltip: "Play sentence",
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
-                      Theme.of(context).colorScheme.primaryContainer,
+                      colorScheme.primaryContainer,
                     ),
                     foregroundColor: WidgetStatePropertyAll(
-                      Theme.of(context).colorScheme.onPrimaryContainer,
+                      colorScheme.onPrimaryContainer,
                     ),
                   ),
                 ),
                 TextButton(
                   onPressed: switch (status) {
-                    Status.loading || Status.checking || Status.correct || Status.incorrect || Status.ended => null,
+                    Status.loading || Status.title || Status.checking || Status.correct || Status.incorrect || Status.ended => null,
                     Status.idle || Status.ready => _submit,
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
-                      Theme.of(context).colorScheme.primaryContainer,
+                      colorScheme.primaryContainer,
                     ),
                     foregroundColor: WidgetStatePropertyAll(
-                      Theme.of(context).colorScheme.onPrimaryContainer,
+                      colorScheme.onPrimaryContainer,
                     ),
                   ),
                   child: Padding(
@@ -267,6 +325,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            }
           ],
         ),
       ),
