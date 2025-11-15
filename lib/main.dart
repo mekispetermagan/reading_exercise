@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'manager.dart';
 
 // GUI for a reading exercise app.
+// The core logic is pure dart, imported from manager.dart.
 
 enum Status { loading, idle, ready, checking, correct, incorrect, ended }
 
@@ -71,6 +72,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ExerciseManager _manager = ExerciseManager();
   Status status = Status.loading;
+  final AudioPlayer _correct = AudioPlayer()
+    ..setReleaseMode(ReleaseMode.stop);
+  final AudioPlayer _wrong = AudioPlayer()
+    ..setReleaseMode(ReleaseMode.stop);
+  final AudioPlayer _fanfare = AudioPlayer()
+    ..setReleaseMode(ReleaseMode.stop);
 
   @override
   void initState() {
