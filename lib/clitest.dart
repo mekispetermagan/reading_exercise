@@ -46,7 +46,7 @@ Future<void> main() async {
       };
     }
     print(manager.checkSubmission() ? "Correct!\n" : "Incorrect!\n");
-    if (!manager.lastExercise) {manager.next();}
+    if (!manager.isLastExercise) {manager.next();}
     else {break;}
   }
 }

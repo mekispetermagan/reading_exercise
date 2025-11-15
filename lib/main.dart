@@ -80,6 +80,8 @@ class _HomePageState extends State<HomePage> {
     ..setReleaseMode(ReleaseMode.stop);
   final AudioPlayer _pop = AudioPlayer()
     ..setReleaseMode(ReleaseMode.stop);
+  final AudioPlayer _sentence = AudioPlayer()
+    ..setReleaseMode(ReleaseMode.stop);
 
   @override
   void initState() {
@@ -98,6 +100,7 @@ class _HomePageState extends State<HomePage> {
     _manager.setData(data);
     _manager.generateExercise();
     if (!mounted) return;
+    _playSentence();
     setState(() {
       status = Status.idle;
     });
@@ -152,16 +155,23 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _next() async {
     if (!mounted) return;
-    if (!_manager.lastExercise) {
+    if (!_manager.isLastExercise) {
       _manager.next();
       _manager.generateExercise();
       status = Status.idle;
+      _playSentence();
     } else {
       status = Status.ended;
     }
     setState(() {});
   }
 
+  Future<void> _playSentence() async {
+    final int? id = _manager.exerciseId;
+    if (id == null) return;
+    await _sentence.stop();
+    _sentence.play(AssetSource("audio/sentences/${id}.mp3"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,28 +218,54 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            TextButton(
-              onPressed: switch (status) {
-                Status.loading || Status.checking || Status.correct || Status.incorrect || Status.ended => null,
-                Status.idle || Status.ready => _submit,
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(
-                  Theme.of(context).colorScheme.primaryContainer,
-                ),
-                foregroundColor: WidgetStatePropertyAll(
-                  Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
-                child: Text(
-                  "Submit",
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  "Score: 3",
                   style: TextStyle(
                     fontSize: 24,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                ),
+                IconButton(
+                  onPressed: _playSentence,
+                  icon: const Icon(Icons.volume_up),
+                  iconSize: 36,
+                  tooltip: "Play sentence",
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
                   ),
+                ),
+                TextButton(
+                  onPressed: switch (status) {
+                    Status.loading || Status.checking || Status.correct || Status.incorrect || Status.ended => null,
+                    Status.idle || Status.ready => _submit,
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
                   ),
-              ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                      ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

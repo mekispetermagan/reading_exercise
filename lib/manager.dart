@@ -2,11 +2,13 @@
 // ExerciseManager provides an API for UI (CLI or GUI)
 
 class ExerciseManager {
+  List<String>? _originalSentences;
   List<String>? _sentences;
   List<String>? _wordsInOrder;
   List<int>? _sourceBank;
   List<int>? _targetBank;
   int _i = 0;
+  int _score = 0;
 
   bool get canSubmit {
     final s = _sourceBank;
@@ -16,10 +18,18 @@ class ExerciseManager {
     return s.isEmpty && t.length == w.length;
   }
 
-  bool get lastExercise {
+  bool get isLastExercise {
     final s = _sentences;
     if (s == null) return false;
     return _i == s.length - 1;
+  }
+
+  // using _i is temporary; id will be in json
+  int? get exerciseId {
+    final os = _originalSentences;
+    final s = _sentences;
+    if (os == null || s == null) return null;
+    return os.indexOf(s[_i]);
   }
 
   List<int>? get sourceBank {
@@ -33,6 +43,7 @@ class ExerciseManager {
 }
 
   void setData(List<String> data) {
+    _originalSentences = [...data];
     _sentences = [...data]..shuffle();
     reset();
   }
