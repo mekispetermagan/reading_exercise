@@ -78,6 +78,8 @@ class _HomePageState extends State<HomePage> {
     ..setReleaseMode(ReleaseMode.stop);
   final AudioPlayer _fanfare = AudioPlayer()
     ..setReleaseMode(ReleaseMode.stop);
+  final AudioPlayer _pop = AudioPlayer()
+    ..setReleaseMode(ReleaseMode.stop);
 
   @override
   void initState() {
@@ -108,7 +110,10 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
           setState(() {
             _manager.move(id);
-            if (_manager.canSubmit) {status = Status.ready;}
+            _pop.play(AssetSource("audio/pop.wav"));
+            if (_manager.canSubmit) {
+              status = Status.ready;
+            }
           });
         }
         ),
@@ -117,24 +122,35 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _submit() async {
     status = Status.checking;
-    bool correct = _manager.checkSubmission();
+    bool isCorrect = _manager.checkSubmission();
+    _feedback(isCorrect);
 
+  }
+
+  Future<void> _feedback(isCorrect) async {
+    if (!mounted) return;
     String message;
-    if (correct) {
-      status = Status.correct;
-      message = "Correct!";
+    if (isCorrect) {
+       message = "Correct!";
+       _correct.play(AssetSource("audio/correct.mp3"));
     } else {
-      status = Status.incorrect;
-      message = "Not quite...";
+       message = "Incorrect!";
+       _wrong.play(AssetSource("audio/wrong.mp3"));
     }
+    setState(() {
+      status = isCorrect ? Status.correct : Status.incorrect;
+    });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 2),
       ),
     );
-
     await Future.delayed(const Duration(milliseconds: 500));
+    _next();
+  }
+
+  Future<void> _next() async {
     if (!mounted) return;
     if (!_manager.lastExercise) {
       _manager.next();
@@ -145,6 +161,7 @@ class _HomePageState extends State<HomePage> {
     }
     setState(() {});
   }
+
 
   @override
   Widget build(BuildContext context) {
