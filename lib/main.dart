@@ -51,6 +51,163 @@ class WordCard extends StatelessWidget {
   }
 }
 
+// The title view is displayed during and after loading,
+// until the user presses the start button.
+class TitleView extends StatelessWidget {
+  final VoidCallback onStart;
+  const TitleView({required this.onStart, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+  final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+
+          // title
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Reading Exercise",
+              style: TextStyle(
+                fontSize: 36,
+                color: colorScheme.onSurface,
+              ),
+            ),
+          ),
+
+          // titleimage
+          Image.asset(
+            'images/reading_girl.png',
+            width: 180,
+          ),
+
+          // startbutton
+          TextButton(
+            onPressed: onStart,
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(
+                colorScheme.primaryContainer,
+              ),
+              foregroundColor: WidgetStatePropertyAll(
+                colorScheme.onPrimaryContainer,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                "Start",
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+                ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ExerciseView extends StatelessWidget {
+  final VoidCallback? onSubmit;
+  final List<Widget> sourceCards;
+  final List<Widget> targetCards;
+  final VoidCallback onPlaySentence;
+  final int score;
+
+  const ExerciseView({
+    required this.onSubmit,
+    required this.sourceCards,
+    required this.targetCards,
+    required this.onPlaySentence,
+    required this.score,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+
+        // source bank
+        Expanded(
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: sourceCards,
+            ),
+          ),
+        ),
+
+        // target bank
+        Expanded(
+          child: SingleChildScrollView(
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: targetCards,
+            ),
+          ),
+        ),
+
+        // bottom bar
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "Score: $score",
+              style: TextStyle(
+                fontSize: 24,
+                color: colorScheme.onSurface,
+                ),
+            ),
+            IconButton(
+              onPressed: onPlaySentence,
+              icon: const Icon(Icons.volume_up),
+              iconSize: 36,
+              tooltip: "Play sentence",
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(
+                  colorScheme.primaryContainer,
+                ),
+                foregroundColor: WidgetStatePropertyAll(
+                  colorScheme.onPrimaryContainer,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: onSubmit,
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(
+                  colorScheme.primaryContainer,
+                ),
+                foregroundColor: WidgetStatePropertyAll(
+                  colorScheme.onPrimaryContainer,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
+                child: Text(
+                  "Submit",
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                  ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -118,12 +275,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   _start() {
-    print("bump");
     setState(() => status = Status.idle);
     _playSentence();
   }
 
-  List<Widget> _createWordCards(List<int> ids) {
+  List<WordCard> _createWordCards(List<int> ids) {
     return [
       for (int id in ids) WordCard(
         word: _manager.labelFor(id),
@@ -201,154 +357,15 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            // source bank
-            Expanded(
-              child: SingleChildScrollView(
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: switch(status) {
-                    Status.loading
-                      => <Widget>[
-                        SizedBox(height: 32, width: 32,), CircularProgressIndicator(),
-                      ],
-                    Status.title
-                      => <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Reading Exercise",
-                          style: TextStyle(
-                            fontSize: 36,
-                            color: colorScheme.onSurface,
-                          ),
-                        ),
-                      ),
-                    ],
-                    Status.ended
-                      => [],
-                    Status.idle ||
-                    Status.ready ||
-                    Status.checking ||
-                    Status.correct ||
-                    Status.incorrect
-                      => sb != null ? _createWordCards(sb) : [],
-                  },
-                ),
-              ),
+        child: status == Status.loading || status == Status.title
+          ? TitleView(onStart: _start)
+          : ExerciseView(
+              onSubmit: status == Status.ready ? _submit : null,
+              sourceCards: sb != null ? _createWordCards(sb) : const [],
+              targetCards: tb != null ? _createWordCards(tb) : const [],
+              onPlaySentence: _playSentence,
+              score: _manager.score,
             ),
-            // target bank
-            Expanded(
-              child: SingleChildScrollView(
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: switch(status) {
-                    Status.loading || Status.title
-                      => <Widget>[
-                        Image.asset(
-                          'images/reading_girl.png',
-                          width: 180,
-                        ),
-                      ],
-                    Status.ended
-                      => [],
-                    Status.idle ||
-                    Status.ready ||
-                    Status.checking ||
-                    Status.correct ||
-                    Status.incorrect
-                      => tb != null ? _createWordCards(tb) : [],
-                  },
-                ),
-              ),
-            ),
-            // bottom bar
-            switch (status) {
-              Status.loading ||
-              Status.ended
-                => const SizedBox.shrink(),
-              Status.title
-                => TextButton(
-                  onPressed: _start,
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                      colorScheme.primaryContainer,
-                    ),
-                    foregroundColor: WidgetStatePropertyAll(
-                      colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      "Start",
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                      ),
-                  ),
-                ),
-              Status.idle ||
-              Status.ready ||
-              Status.checking ||
-              Status.correct ||
-              Status.incorrect
-                => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "Score: ${_manager.score}",
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: colorScheme.onSurface,
-                    ),
-                ),
-                IconButton(
-                  onPressed: _playSentence,
-                  icon: const Icon(Icons.volume_up),
-                  iconSize: 36,
-                  tooltip: "Play sentence",
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                      colorScheme.primaryContainer,
-                    ),
-                    foregroundColor: WidgetStatePropertyAll(
-                      colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: switch (status) {
-                    Status.loading || Status.title || Status.checking || Status.correct || Status.incorrect || Status.ended => null,
-                    Status.idle || Status.ready => _submit,
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                      colorScheme.primaryContainer,
-                    ),
-                    foregroundColor: WidgetStatePropertyAll(
-                      colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                      ),
-                  ),
-                ),
-              ],
-            ),
-            }
-          ],
-        ),
       ),
     );
   }
