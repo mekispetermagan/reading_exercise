@@ -112,14 +112,15 @@ class _HomePageState extends State<HomePage> {
     _manager.setData(data);
     _manager.generateExercise();
     if (!mounted) return;
-    _playSentence();
     setState(() {
       status = Status.title;
     });
   }
 
   _start() {
+    print("bump");
     setState(() => status = Status.idle);
+    _playSentence();
   }
 
   List<Widget> _createWordCards(List<int> ids) {
@@ -226,7 +227,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      TextButton(onPressed: _start(), child: Text("Start"),)
                     ],
                     Status.ended
                       => [],
@@ -266,11 +266,32 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            // bottom bar
             switch (status) {
               Status.loading ||
-              Status.title ||
               Status.ended
                 => const SizedBox.shrink(),
+              Status.title
+                => TextButton(
+                  onPressed: _start,
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      colorScheme.primaryContainer,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Text(
+                      "Start",
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                      ),
+                  ),
+                ),
               Status.idle ||
               Status.ready ||
               Status.checking ||
