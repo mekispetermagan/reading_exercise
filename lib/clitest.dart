@@ -40,13 +40,13 @@ Future<void> main() async {
       userInput = stdin.readLineSync();
       try {
         int? i = userInput != null ? int.parse(userInput) : null;
-        if (i != null) manager.move((sb+tb)[i]);
+        if (i != null) manager.toggleWord((sb+tb)[i]);
       } catch(e) {
         continue;
       };
     }
     print(manager.checkSubmission() ? "Correct!\n" : "Incorrect!\n");
-    if (!manager.isLastExercise) {manager.next();}
+    if (!manager.isLastExercise) {manager.nextExercise();}
     else {break;}
   }
 }
