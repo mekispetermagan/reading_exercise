@@ -4,8 +4,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:convert';
 import 'manager.dart';
 
-// GUI for a reading exercise app.
-// The core logic is pure dart, imported from manager.dart.
+/// GUI for a reading exercise app.
+/// The core logic is pure dart, imported from manager.dart.
 
 // Web debug asset paths:
 // - images:  images/
@@ -16,8 +16,9 @@ import 'manager.dart';
 // - audio:   audio/
 // - json:    assets/data/
 
-// High-level UI state of a reading session, deciding
-// which screen and controls are shown.
+/// High-level UI state of one reading session.
+/// Drives which screen is shown and whether the user
+/// can interact with the current exercise.
 // These are the stages of the app:
 // - loading:   title view,     fetching json
 // - title:     title view,     json is loaded
@@ -38,11 +39,13 @@ enum SessionStatus {
   ended,
   }
 
-// Bucketed accuracy of the player (poor/average/good),
-// used for the final feedback message.
+/// Coarse performance buckets derived from overall accuracy.
+/// Used only to select the final feedback text on the end screen.
 // accuracy level: see at the _calculateAccuracyLevel() in HomePageState
 enum AccuracyLevel {poor, average, good}
 
+/// Tappable visual for a single word choice in the exercise.
+/// Purely presentational: behavior is injected via [onTap].
 class WordCard extends StatelessWidget {
   final String word;
   final VoidCallback? onTap;
@@ -75,9 +78,9 @@ class WordCard extends StatelessWidget {
   }
 }
 
-// Full-screen title view shown while loading and
-// before the session starts. Displays the app title, illustration,
-// and a start button (or "Wait..." while loading).
+/// Full-screen title / intro view.
+/// Shown while loading and after data is ready, until the
+/// user starts the exercise via [onStart].
 class TitleView extends StatelessWidget {
   final VoidCallback? onStart;
   const TitleView({required this.onStart, super.key});
@@ -143,9 +146,9 @@ class ExerciseView extends StatelessWidget {
   final VoidCallback onPlaySentence;
   final int score;
 
-// Main exercise view showing source and target word banks
-// and the current score. Also provides sentence playback and
-// a submit button that is enabled/disabled by the parent.
+/// Main exercise layout: source and target word banks, score,
+/// sentence playback button and submit button.
+/// Submit is enabled/disabled by passing a non-null/nullable [onSubmit].
   const ExerciseView({
     required this.onSubmit,
     required this.sourceCards,
@@ -239,9 +242,9 @@ class ExerciseView extends StatelessWidget {
   }
 }
 
-// Final result view shown after the last exercise.
-// Displays the total score and a message based on [accuracyLevel],
-// or an error message if no exercises could be loaded.
+  /// Final summary screen after the last exercise.
+  /// Shows total [score] and a message based on [accuracyLevel],
+  /// or an error-style message if accuracy is unavailable.
  class EndView extends StatelessWidget {
   final int score;
   final AccuracyLevel? accuracyLevel;
@@ -347,8 +350,8 @@ class ExerciseView extends StatelessWidget {
   }
 }
 
-// Root widget configuring app title, dark theme, and routing
-// to [HomePage].
+/// Root widget configuring Material theming and bootstrapping
+/// the reading flow via [HomePage].
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -367,9 +370,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Top-level page widget for the reading exercise flow.
-// Its state object controls loading, session progress,
-// and the active view.
+/// Shell page for the reading exercise feature.
+/// Holds the static title and delegates behavior to [_HomePageState].
 class HomePage extends StatefulWidget {
   final String title;
   const HomePage({super.key, required this.title});
@@ -378,9 +380,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-// Stateful controller for a reading exercise session.
-// Coordinates the [ExerciseManager], session status, UI updates,
-// and audio feedback.
+/// Coordinates a complete reading session:
+/// loads data, advances exercises, tracks [SessionStatus],
+/// and drives audio / visual feedback.
 // HomePage is the only stateful widget;
 // its state holds the UI side logic.
 class _HomePageState extends State<HomePage> {
@@ -415,9 +417,9 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  /// Loads exercise sentences from bundled JSON,
-  /// passes them to the [ExerciseManager],
-  /// and switches to the title screen when ready.
+  /// One-shot loader for exercise sentences from JSON assets.
+  /// Populates the [ExerciseManager], creates the first exercise,
+  /// then moves the session into the title state.
   // loads data from json,
   // and passes it to the exercise manager
   Future<void> _loadExerciseData() async {
@@ -433,15 +435,17 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  /// Starts the exercise session from the title screen
-  /// and plays the first sentence audio.
+  /// Transitions from the title screen into the first exercise
+  /// and immediately plays the current sentence audio.
   void _startSession() {
     setState(() => _status = SessionStatus.idle);
     _playSentence();
   }
 
-  /// Taps toggle word selection, play a pop sound,
-  /// and update whether submission is possible.  List<Widget> _buildWordCards(List<int> ids) {
+  /// Builds [WordCard]s for the given IDs and wires tap behavior:
+  /// toggling selection in the manager, playing a pop sound, and
+  /// updating [_status] between idle and ready. Disabled while
+  /// showing correct/incorrect feedback.
   List<Widget> _buildWordCards(List<int> ids) {
     return [
       for (int id in ids) WordCard(
@@ -463,8 +467,9 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
-  // Handles the submit button press: sets status to checking,
-  /// evaluates the current attempt via the manager, and triggers feedback.
+  /// Entry point for the submit button.
+  /// Marks the session as checking, evaluates the current attempt
+  /// via the manager, then forwards the result to [_showFeedback].
   void _handleSubmit() {
     setState(() {
     _status = SessionStatus.checking;
@@ -473,8 +478,9 @@ class _HomePageState extends State<HomePage> {
     _showFeedback(isCorrect);
   }
 
-  /// Shows feedback for the last submission: plays the correct/wrong sound,
-  /// updates status, displays a SnackBar, and then advances to the next exercise.
+  /// Plays correct/wrong audio, updates [_status] accordingly,
+  /// shows a brief SnackBar message, waits a short delay and
+  /// then triggers [_goToNextExercise].
   Future<void> _showFeedback(bool isCorrect) async {
     if (!mounted) return;
     String message;
@@ -499,9 +505,9 @@ class _HomePageState extends State<HomePage> {
     _goToNextExercise();
   }
 
-/// Moves to the next exercise if available (regenerating data
-/// and playing the sentence), or ends the session
-/// and plays the fanfare when there are no more exercises.
+  /// Advances the session: either generates and shows the next
+  /// exercise (and plays its sentence) or, if this was the last
+  /// one, marks the session ended and plays the fanfare.
   void _goToNextExercise() {
     if (!mounted) return;
     if (!_manager.isLastExercise) {
@@ -516,8 +522,9 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  // Plays the audio for the current exercise sentence,
-  // if there is a valid exercise ID
+  /// Stops any currently playing sentence and starts playback
+  /// for the audio file associated with the current exercise ID,
+  /// if one is available.
   Future<void> _playSentence() async {
     final int? id = _manager.exerciseId;
     if (id == null) return;
@@ -525,9 +532,9 @@ class _HomePageState extends State<HomePage> {
     _sentencePlayer.play(AssetSource("audio/sentences/$id.mp3"));
   }
 
-  /// Converts the manager's raw accuracy (0.0–1.0)
-  /// into an [AccuracyLevel] bucket used for the end-of-session
-  /// feedback text.
+  /// Converts the manager's raw accuracy (0.0–1.0) into an
+  /// [AccuracyLevel] bucket for use on the end screen.
+  /// Returns null if no accuracy data is available.
   // accuracy levels:
   // - 0%  <= poor    < 40%
   // - 40% <= average < 80%
@@ -544,8 +551,6 @@ class _HomePageState extends State<HomePage> {
     };
   }
 
-/// Builds the scaffold and chooses which view to show based on [_status],
-/// wiring current score, cards, and callbacks into the child widgets.
   @override
   Widget build(BuildContext context) {
     final sb = _manager.sourceBank;
@@ -582,16 +587,15 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/// Loads a JSON array of strings from the given asset [assetPath]
-/// and returns it as a [List<String>].
+/// Utility for loading a JSON array of strings from [assetPath]
+/// and returning it as a [List<String>]. Assumes the JSON has
+/// the expected shape (simple string array).
 Future<List<String>> loadExercises(String assetPath) async {
   final text = await rootBundle.loadString(assetPath);
   final List<dynamic> list = jsonDecode(text) as List<dynamic>;
   return List<String>.from(list);
 }
 
-// Application entry point: starts the Flutter app
-// with [MyApp] as the root widget.
 void main() {
   runApp(const MyApp());
 }
