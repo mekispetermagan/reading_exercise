@@ -1,10 +1,198 @@
 [
-  "Baby you light up my world like nobody else",
-  "The way that you flip your hair gets me overwhelmed",
-  "But when you smile at the ground it ain't hard to tell",
-  "You don't know (oh oh)",
-  "You don't know you're beautiful",
-  "If only you saw what I can see",
-  "You'd understand why I want you so desperately",
-  "Right now I'm looking at you and I can't believe"
+    {
+        "category": "Western Old",
+        "artist": "Boney M",
+        "title": "Rivers of Babylon",
+        "lyrics": [
+            "By the rivers of Babylon, there we sat down",
+            "Ye-eah we wept, when we remembered Zion",
+            "Let the words of our mouth and the meditation of our heart",
+            "Be acceptable in thy sight here tonight",
+            "When the wicked",
+            "Carried us away in captivity",
+            "Requiring of us a song",
+            "Now how shall we sing the Lord's song in a strange land"
+        ]
+    },
+    {
+        "category": "Western Old",
+        "artist": "John Denver",
+        "title": "Country Roads",
+        "lyrics": [
+            "Almost Heaven West Virginia",
+            "Blue Ridge Mountains Shenandoah River",
+            "Life is old there older than the trees",
+            "Younger than the mountains growing like a breeze",
+            "Country roads take me home",
+            "To the place I belong",
+            "West Virginia mountain mama",
+            "Take me home country roads"
+        ]
+    },
+    {
+        "category": "Western Old",
+        "artist": "Bob Marley",
+        "title": "One Love",
+        "lyrics": [
+            "One love one heart",
+            "Let's get together and feel alright",
+            "Hear the children crying",
+            "Saying give thanks and praise to the Lord",
+            "And I will feel alright",
+            "Saying, let's get together and feel alrigh",
+            "If you love your neighbor brother man a human right",
+            "Send this message to the world and every other place"
+        ]
+    },
+    {
+        "category": "Western Old",
+        "artist": "Backstreet Boys",
+        "title": "I Want It That Way",
+        "lyrics": [
+            "You are my fire The one desire",
+            "Believe when I say I want it that way",
+            "But we are two worlds apart",
+            "Can't reach to your heart",
+            "Tell me why Ain't nothing but a heartache",
+            "Tell me why Ain't nothing but a mistake",
+            "Tell me why I never wanna hear you say",
+            "I want it that way"
+        ]
+    },
+    {
+        "category": "Western Old",
+        "artist": "Ed Sheeran",
+        "title": "Perfect",
+        "lyrics": [
+            "Baby I'm dancing in the dark",
+            "With you between my arms",
+            "Barefoot on the grass",
+            "Listening to our favourite song",
+            "When you said you looked a mess",
+            "I whispered underneath my breath",
+            "But you heard it",
+            "Darling you look perfect tonight"
+        ]
+    },
+    {
+        "category": "Ugandan New",
+        "artist": "Spice Diana",
+        "title": "Siri Regular",
+        "lyrics": [
+            "Omukwano guluma ng'akaddaliddali",
+            "Osiita otakula bw'osiisiitira eh",
+            "Eyasembayo n'eyasooka bwebityo",
+            "Aah bwebityo, tebiriimu bya kusosola",
+            "Yadde olina bangi b'olaba eyo Ssiri regular",
+            "Yadde abawala bakwefasa eyo ssiri regular",
+            "Yadde olina abakulwanira eyo ssiri regular",
+            "Era bagambe bamanye nti eriyo atali regular"
+        ]
+    },
+    {
+        "category": "Ugandan New",
+        "artist": "Alien Skin",
+        "title": "Kapati",
+        "lyrics": [
+            "Yenze champion girl omuzibu bambi",
+            "Sigenda siri balugu Woowe",
+            "Wamma emikono waggulu",
+            "Abagamba endongo ngikuba kikugu",
+            "Let me say Kapati ku mutima mufunda",
+            "Kapati kati omenya mateeka",
+            "Kapati nga nakeera gy′obeera",
+            "E Nakapatiti Naka"
+        ]
+    },
+    {
+        "category": "Ugandan New",
+        "artist": "Sheebah",
+        "title": "Nessim",
+        "lyrics": [
+            "Ononsonyiwa okulwayo silikawo",
+            "Nkimanyi tolya mukyalo silikawo",
+            "Kenkomyewo kabeyisewo silikawo",
+            "Bangambire nze ndi wawaneno",
+            "Wesibadde Bibade bitya wesibadde",
+            "Baby nyumiza wesibadde",
+            "Wesibadde bakulisiza biki wesibadde",
+            "Baby nyumiza wesibadde"
+        ]
+    },
+    {
+        "category": "Ugandan New",
+        "artist": "Radio and Weasel",
+        "title": "Neera",
+        "lyrics": [
+            "Nze bulilunaku njagala byakunkwana",
+            "Masanyu masanyu kwegonza kumpaana nga",
+            "Ye gwe gw'enina gw'amanyi ekiri munda",
+            "Naguno omutima gwakyuma silikusa",
+            "Oyagala nenyongeza ngantumbiza nkuwe'omukwano ogutalimu",
+            "Kuseela kuseela kuseela ah ahh",
+            "Nga bwetwali muntandikwa, munyanjula aka kiss naka breakfast in bed",
+            "Nkagala, neera neera"
+        ]
+    },
+    {
+        "category": "Ugandan New",
+        "artist": "Eddy Kenzo",
+        "title": "Nkulowozaako",
+        "lyrics": [
+            "Nkulowozaako",
+            "Lwakuba maama obeela wenkyanga",
+            "Nkumisinga nyo nyo nyo",
+            "Ekinuma lwaki oba ogaana",
+            "Obudde bwekiro",
+            "Sikyeebaka mbeera nekyuusa",
+            "Luliba lumu nabasezi balimpulira",
+            "Mukwaano nyamba"
+        ]
+    },
+    {
+        "category": "Ugandan Old",
+        "artist": "Chameleone",
+        "title": "Mama Mia",
+        "lyrics": [
+            "Tafadhali hao wa ma Bima wako na pesa",
+            "Alafu hawana penzi",
+            "Mbona umeniacha",
+            "Umeniachia watoto",
+            "Mpaka wanalia huko nyumbani, Njoki",
+            "Mbona umenitupa",
+            "Kama na figure yako",
+            "Ndiyo kama ya chupa, Njoki"
+        ]
+    },
+    {
+        "category": "Ugandan Old",
+        "artist": "Paul Kafeero",
+        "title": "Walumbe Zaaya",
+        "lyrics": [
+            "Walumbe Zaaya atukola bwati",
+            "Bakaabasajja b'otugumbula otyo",
+            "Oli wa ngeri ki atayisa balungi?",
+            "N'abessimbo n'obafaggyiya otyo!",
+            "Laba bw'olekawo ab'emitwe emiyaaye",
+            "Oli wa ngeri ki atamanyi bateefu?",
+            "Onkutulidde ne guitar nsula nkuyimba",
+            "Komaaniina ogira okubulwa w'osula"
+        ]
+    },
+    {
+        "category": "Ugandan Old",
+        "artist": "Philly Lutaaya",
+        "title": "Born in Africa",
+        "lyrics": [
+            "Don't worry where you are coming from",
+            "So wonderful when people meet",
+            "Down in Africa the land of the sun",
+            "We sing and dance it depends on the mood",
+            "Music is the topic today",
+            "Let us throw our worries away",
+            "No frontiers no barriers to dread",
+            "Just doing what we choose to do"
+        ]
+    }
 ]
+

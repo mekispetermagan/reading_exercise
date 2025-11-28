@@ -108,7 +108,10 @@ class TitleView extends StatelessWidget {
 
           // titleimage
           Image.asset(
-            'images/reading_girl.png',
+            // for Chrome debugging:
+            // 'images/reading_girl.png',
+            // for apk build:
+            'assets/images/reading_girl.png',
             width: 180,
           ),
 
@@ -139,6 +142,9 @@ class TitleView extends StatelessWidget {
   }
 }
 
+/// Main exercise layout: source and target word banks, score,
+/// sentence playback button and submit button.
+/// Submit is enabled/disabled by passing a non-null/nullable [onSubmit].
 class ExerciseView extends StatelessWidget {
   final VoidCallback? onSubmit;
   final List<Widget> sourceCards;
@@ -146,9 +152,6 @@ class ExerciseView extends StatelessWidget {
   final VoidCallback onPlaySentence;
   final int score;
 
-/// Main exercise layout: source and target word banks, score,
-/// sentence playback button and submit button.
-/// Submit is enabled/disabled by passing a non-null/nullable [onSubmit].
   const ExerciseView({
     required this.onSubmit,
     required this.sourceCards,
@@ -242,10 +245,10 @@ class ExerciseView extends StatelessWidget {
   }
 }
 
-  /// Final summary screen after the last exercise.
-  /// Shows total [score] and a message based on [accuracyLevel],
-  /// or an error-style message if accuracy is unavailable.
- class EndView extends StatelessWidget {
+/// Final summary screen after the last exercise.
+/// Shows total [score] and a message based on [accuracyLevel],
+/// or an error-style message if accuracy is unavailable.
+class EndView extends StatelessWidget {
   final int score;
   final AccuracyLevel? accuracyLevel;
 
@@ -341,7 +344,10 @@ class ExerciseView extends StatelessWidget {
               ),
           },
           Image.asset(
-            'images/reading_girl.png',
+            // for Chrome debugging:
+            // 'images/reading_girl.png',
+            // for apk build:
+            'assets/images/reading_girl.png',
             width: 180,
           ),
         ],
@@ -388,6 +394,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ExerciseManager _manager = ExerciseManager();
   SessionStatus _status = SessionStatus.loading;
+  final AudioPlayer _introPlayer = AudioPlayer()
+    ..setReleaseMode(ReleaseMode.stop);
   final AudioPlayer _correctPlayer = AudioPlayer()
     ..setReleaseMode(ReleaseMode.stop);
   final AudioPlayer _wrongPlayer = AudioPlayer()
@@ -404,6 +412,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _introPlayer.play(AssetSource("audio/intro.mp3"));
     _loadExerciseData();
   }
 
@@ -423,10 +432,10 @@ class _HomePageState extends State<HomePage> {
   // loads data from json,
   // and passes it to the exercise manager
   Future<void> _loadExerciseData() async {
-    // relative path for web; should be
-    //   assets/data/exercises.json
-    // for android
-    List<String> data = await loadExercises('data/exercises.json');
+    // for Chrome debugging:
+    // List<String> data = await loadExercises('data/exercises.json');
+    // for apk build:
+    List<String> data = await loadExercises('assets/data/exercises.json');
     _manager.setData(data);
     _manager.generateExercise();
     if (!mounted) return;
