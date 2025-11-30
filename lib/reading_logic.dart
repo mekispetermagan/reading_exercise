@@ -98,6 +98,7 @@ class SelectionManager {
   }
 }
 
+enum ProgressStatus {unSolved, correct, wrong}
 
 // Exercise logic
 class ExerciseManager {
@@ -110,13 +111,20 @@ class ExerciseManager {
   late List<int> _targetBank;
   int _currentIndex = 0;
   int _score = 0;
+  late List<ProgressStatus> _progressLog;
 
   ExerciseManager({
     required List<String> sentences
   }) : _originalSentences = [...sentences],
        _workingSentences = [...sentences]..shuffle()
   {
+    _progressLog = List<ProgressStatus>.generate(
+      _workingSentences.length,
+      (_) => ProgressStatus.unSolved,
+      growable: false,
+    );
     generateExercise();
+
   }
 
   bool get canSubmit {
@@ -139,6 +147,9 @@ class ExerciseManager {
   List<int> get targetBank => _targetBank;
   int get score => _score;
   int get maxScore => _workingSentences.length;
+  bool get correctSubmission => _progressLog[_currentIndex] == ProgressStatus.correct;
+  List<ProgressStatus> get progressLog => _progressLog;
+  int get current => _currentIndex;
 
   // Reset the whole session for the current data: go back
   // to the first exercise, clear banks, and reset score.
@@ -211,13 +222,17 @@ class ExerciseManager {
     throw ArgumentError("Wrong id!");
   }
 
-  bool get isCorrect {
+  void submit() {
     final tb = _targetBank;
     final wo = _wordsInOrder;
     bool matchAt(int i) => wo[tb[i]] == wo[i];
     bool result = [ for (int i=0; i<tb.length; i++) matchAt(i) ]
       .every((t) => t);
-    if (result) _score++;
-    return result;
+    if (result) {
+      _score++;
+      _progressLog[_currentIndex] = ProgressStatus.correct;
+    } else {
+      _progressLog[_currentIndex] = ProgressStatus.wrong;
+    }
   }
 }

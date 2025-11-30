@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reading_exercise/reading_logic.dart';
 import "widgets.dart";
 
 /// Shown while loading and after data is ready, until the
@@ -9,40 +10,44 @@ class TitleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return SizedBox.expand(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
+  final ColorScheme cs = Theme.of(context).colorScheme;
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: SizedBox.expand(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
 
-          // title
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Read every day!",
-              style: TextStyle(
-                fontSize: 36,
-                color: colorScheme.onSurface,
-              ),
+                // title
+                Text(
+                  "Read every day!",
+                  style: TextStyle(
+                    fontSize: 36,
+                    color: cs.onSurface,
+                  ),
+                ),
+
+                // titleimage
+                Image.asset(
+                  // for Chrome debugging:
+                  // 'images/reading_girl.png',
+                  // for apk build:
+                  'assets/images/reading_girl.png',
+                  width: 180,
+                ),
+
+                // startbutton
+                PrimaryActionButton(
+                  text: "Start",
+                  onPressed: onStart
+                ),
+              ],
             ),
           ),
-
-          // titleimage
-          Image.asset(
-            // for Chrome debugging:
-            // 'images/reading_girl.png',
-            // for apk build:
-            'assets/images/reading_girl.png',
-            width: 180,
-          ),
-
-          // startbutton
-          PrimaryActionButton(
-            text: "Start",
-            onPressed: onStart
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -84,24 +89,17 @@ class CategorySelectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsetsGeometry.all(24),
-          child: SizedBox.expand(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                for (final item in categories)
-                TextButton(
-                  child: Text(item),
-                  onPressed: () => onSubmit(item),
-                )
-              ],
-            ),
-          ),
-        ),
+    return PageFrame(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          for (final item in categories)
+          PrimaryActionButton(
+            text: item,
+            onPressed: () => onSubmit(item),
+          )
+        ],
       ),
     );
   }
@@ -119,24 +117,18 @@ class ExerciseSelectScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsetsGeometry.all(24),
-          child: SizedBox.expand(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                for (final title in titles)
-                TextButton(
-                  child: Text(title),
-                  onPressed: () => onSubmit(title),
-                )
-              ],
-            ),
-          ),
-        ),
+    return PageFrame(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          for (final title in titles)
+          PrimaryActionButton(
+            text: title,
+            onPressed: () => onSubmit(title),
+            fontSize: 18,
+          )
+        ],
       ),
     );
   }
@@ -149,50 +141,56 @@ class ExerciseScreen extends StatelessWidget {
   final List<Widget> targetCards;
   final VoidCallback? onPlaySentence;
   final VoidCallback? onSubmit;
+  final List<ProgressStatus> progressLog;
   final int score;
+  final int current;
 
   const ExerciseScreen({
     required this.sourceCards,
     required this.targetCards,
     required this.onPlaySentence,
     required this.onSubmit,
+    required this.progressLog,
     required this.score,
+    required this.current,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-
-        // source bank
-        Expanded(
-          child: SingleChildScrollView(
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: sourceCards,
+    return PageFrame(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          ProgressBar(
+            progressLog: progressLog,
+            current: current,
+          ),
+          // source bank
+          Expanded(
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: sourceCards,
+              ),
             ),
           ),
-        ),
 
-        // target bank
-        Expanded(
-          child: SingleChildScrollView(
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: targetCards,
+          // target bank
+          Expanded(
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: targetCards,
+              ),
             ),
           ),
-        ),
 
-        // bottom bar
-        Padding(
-          padding: const EdgeInsets.only(bottom: 48),
-          child: Row(
+          // bottom bar
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
@@ -222,8 +220,8 @@ class ExerciseScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -243,7 +241,7 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return SizedBox.expand(
+    return PageFrame(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:convert';
-import 'reading_domain.dart';
+import 'reading_logic.dart';
 import "session_phases.dart";
 import 'widgets.dart';
 import 'screens.dart';
@@ -125,8 +125,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onSubmitAnswer(ExerciseManager manager) async {
-    if (manager.isCorrect) {
-      _playEffect("correct");
+    manager.submit();
+    if (manager.correctSubmission) {
+      _playEffect("correct.mp3");
       setState(() => _phase = ExercisePhase(
         step: ExerciseStep.correctFeedback,
         manager: manager,
@@ -207,28 +208,36 @@ class _HomePageState extends State<HomePage> {
             targetCards: cards(manager.targetBank, true),
             onPlaySentence: () => _onPlaySentence(manager.sentenceId!),
             onSubmit: null,
+            progressLog: manager.progressLog,
             score: manager.score,
+            current: manager.current,
           ),
           ExerciseStep.readyToSubmit => ExerciseScreen(
             sourceCards: cards(manager.sourceBank, true),
             targetCards: cards(manager.targetBank, true),
             onPlaySentence: () => _onPlaySentence(manager.sentenceId!),
             onSubmit: () => _onSubmitAnswer(manager),
+            progressLog: manager.progressLog,
             score: manager.score,
+            current: manager.current,
           ),
           ExerciseStep.correctFeedback => ExerciseScreen(
             sourceCards: cards(manager.sourceBank, false),
             targetCards: cards(manager.targetBank, false),
             onPlaySentence: null,
             onSubmit: null,
+            progressLog: manager.progressLog,
             score: manager.score,
+            current: manager.current,
           ),
           ExerciseStep.incorrectFeedback => ExerciseScreen(
             sourceCards: cards(manager.sourceBank, false),
             targetCards: cards(manager.targetBank, false),
             onPlaySentence: null,
             onSubmit: null,
+            progressLog: manager.progressLog,
             score: manager.score,
+            current: manager.current,
           ),
         };
       }

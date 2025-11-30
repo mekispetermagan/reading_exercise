@@ -1,4 +1,4 @@
-import "reading_domain.dart";
+import "reading_logic.dart";
 
 /// UI status of a session.
 /// Drives which screen is shown and whether the user
