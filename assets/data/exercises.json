@@ -1,9 +1,8 @@
 [
     {
         "category": "Western Old",
-        "artist": "Boney M",
-        "title": "Rivers of Babylon",
-        "lyrics": [
+        "title": "Boney M: Rivers of Babylon",
+        "sentences": [
             "By the rivers of Babylon, there we sat down",
             "Ye-eah we wept, when we remembered Zion",
             "Let the words of our mouth and the meditation of our heart",
@@ -16,9 +15,8 @@
     },
     {
         "category": "Western Old",
-        "artist": "John Denver",
-        "title": "Country Roads",
-        "lyrics": [
+        "title": "John Denver: Country Roads",
+        "sentences": [
             "Almost Heaven West Virginia",
             "Blue Ridge Mountains Shenandoah River",
             "Life is old there older than the trees",
@@ -31,9 +29,8 @@
     },
     {
         "category": "Western Old",
-        "artist": "Bob Marley",
-        "title": "One Love",
-        "lyrics": [
+        "title": "Bob Marley: One Love",
+        "sentences": [
             "One love one heart",
             "Let's get together and feel alright",
             "Hear the children crying",
@@ -46,9 +43,8 @@
     },
     {
         "category": "Western Old",
-        "artist": "Backstreet Boys",
-        "title": "I Want It That Way",
-        "lyrics": [
+        "title": "Backstreet Boys: I Want It That Way",
+        "sentences": [
             "You are my fire The one desire",
             "Believe when I say I want it that way",
             "But we are two worlds apart",
@@ -61,9 +57,8 @@
     },
     {
         "category": "Western Old",
-        "artist": "Ed Sheeran",
-        "title": "Perfect",
-        "lyrics": [
+        "title": "Ed Sheeran: Perfect",
+        "sentences": [
             "Baby I'm dancing in the dark",
             "With you between my arms",
             "Barefoot on the grass",
@@ -76,9 +71,8 @@
     },
     {
         "category": "Ugandan New",
-        "artist": "Spice Diana",
-        "title": "Siri Regular",
-        "lyrics": [
+        "title": "Spice Diana: Siri Regular",
+        "sentences": [
             "Omukwano guluma ng'akaddaliddali",
             "Osiita otakula bw'osiisiitira eh",
             "Eyasembayo n'eyasooka bwebityo",
@@ -91,24 +85,22 @@
     },
     {
         "category": "Ugandan New",
-        "artist": "Alien Skin",
-        "title": "Kapati",
-        "lyrics": [
+        "title": "Alien Skin: Kapati",
+        "sentences": [
             "Yenze champion girl omuzibu bambi",
             "Sigenda siri balugu Woowe",
             "Wamma emikono waggulu",
             "Abagamba endongo ngikuba kikugu",
             "Let me say Kapati ku mutima mufunda",
             "Kapati kati omenya mateeka",
-            "Kapati nga nakeera gy′obeera",
+            "Kapati nga nakeera gy'obeera",
             "E Nakapatiti Naka"
         ]
     },
     {
         "category": "Ugandan New",
-        "artist": "Sheebah",
-        "title": "Nessim",
-        "lyrics": [
+        "title": "Sheebah: Wesibadde",
+        "sentences": [
             "Ononsonyiwa okulwayo silikawo",
             "Nkimanyi tolya mukyalo silikawo",
             "Kenkomyewo kabeyisewo silikawo",
@@ -121,9 +113,8 @@
     },
     {
         "category": "Ugandan New",
-        "artist": "Radio and Weasel",
-        "title": "Neera",
-        "lyrics": [
+        "title": "Radio and Weasel: Neera",
+        "sentences": [
             "Nze bulilunaku njagala byakunkwana",
             "Masanyu masanyu kwegonza kumpaana nga",
             "Ye gwe gw'enina gw'amanyi ekiri munda",
@@ -136,9 +127,8 @@
     },
     {
         "category": "Ugandan New",
-        "artist": "Eddy Kenzo",
-        "title": "Nkulowozaako",
-        "lyrics": [
+        "title": "Eddy Kenzo: Nkulowozaako",
+        "sentences": [
             "Nkulowozaako",
             "Lwakuba maama obeela wenkyanga",
             "Nkumisinga nyo nyo nyo",
@@ -151,9 +141,8 @@
     },
     {
         "category": "Ugandan Old",
-        "artist": "Chameleone",
-        "title": "Mama Mia",
-        "lyrics": [
+        "title": "Chameleone: Mama Mia",
+        "sentences": [
             "Tafadhali hao wa ma Bima wako na pesa",
             "Alafu hawana penzi",
             "Mbona umeniacha",
@@ -166,9 +155,8 @@
     },
     {
         "category": "Ugandan Old",
-        "artist": "Paul Kafeero",
-        "title": "Walumbe Zaaya",
-        "lyrics": [
+        "title": "Paul Kafeero: Walumbe Zaaya",
+        "sentences": [
             "Walumbe Zaaya atukola bwati",
             "Bakaabasajja b'otugumbula otyo",
             "Oli wa ngeri ki atayisa balungi?",
@@ -181,9 +169,8 @@
     },
     {
         "category": "Ugandan Old",
-        "artist": "Philly Lutaaya",
-        "title": "Born in Africa",
-        "lyrics": [
+        "title": "Philly Lutaaya: Born in Africa",
+        "sentences": [
             "Don't worry where you are coming from",
             "So wonderful when people meet",
             "Down in Africa the land of the sun",
