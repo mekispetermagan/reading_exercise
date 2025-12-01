@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
 import "reading_logic.dart" show ProgressStatus;
 
-class PageFrame extends StatelessWidget {
+class ScreenShell extends StatelessWidget {
+  final VoidCallback? onRestart;
   final Widget child;
-  const PageFrame({
+  const ScreenShell({
     required this.child,
+    required this.onRestart,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: SizedBox.expand(
-            child: child,
+    final or = onRestart;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (or != null) {or();}
+        else {Navigator.of(context).pop();}
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: SizedBox.expand(
+              child: child,
+            ),
           ),
         ),
+      // floatingActionButton: or != null
+      //   ? FloatingActionButton.small(
+      //     onPressed: or,
+      //     child: const Icon(Icons.restart_alt_outlined),
+      //   )
+      //   : null,
       ),
     );
   }
@@ -25,14 +42,16 @@ class PageFrame extends StatelessWidget {
 
 class PrimaryActionButton extends StatelessWidget {
   final String text;
+  final String nullText;
   final VoidCallback? onPressed;
   final double fontSize;
   const PrimaryActionButton({
     required this.text,
     required this.onPressed,
     this.fontSize=24,
+    nullText,
     super.key,
-  });
+  }) : nullText = nullText ?? text;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +69,7 @@ class PrimaryActionButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Text(
-          onPressed != null ? text : "Wait...",
+          onPressed != null ? text : nullText,
           style: TextStyle(
             fontSize: fontSize,
           ),
@@ -111,10 +130,10 @@ class ProgressBarSegment extends StatelessWidget {
     ColorScheme cs = Theme.of(context).colorScheme;
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.all(1.0),
+        padding: EdgeInsets.all(2.0),
         child: AnimatedContainer(
           duration: Duration(milliseconds: 200),
-          height: 15,
+          height: 24,
           decoration: BoxDecoration(
             color: switch(status) {
               ProgressStatus.unSolved => cs.surface,

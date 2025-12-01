@@ -3,11 +3,13 @@
 
 class ReadingExercise {
   final String category;
+  final String id;
   final String title;
   final List<String> sentences;
 
   const ReadingExercise({
     required this.category,
+    required this.id,
     required this.title,
     required this.sentences,
   });
@@ -15,34 +17,46 @@ class ReadingExercise {
   factory ReadingExercise.fromJson({
     required Map<String, dynamic> json,
   }) {
-    if (json["category"] == null) {
-      throw FormatException("Malformed json: missing category key.");
-    }
-    if (json["title"] == null) {
-      throw FormatException("Malformed json: missing title key.");
-    }
-    if (json["sentences"] == null) {
-      throw FormatException("Malformed json: missing sentences key.");
-    }
-    if (json["category"] is! String) {
-      throw FormatException("Malformed json: category must be a string: ${json["category"]}");
-    }
-    if (json["title"] is! String) {
-      throw FormatException("Malformed json: title must be a string: ${json["title"]}");
-    }
-    if (json["sentences"] is! List) {
-      throw FormatException("Malformed json: sentences must be a list:"
-        " ${json["sentences"]}");
-    }
-    for (final s in json["sentences"]) {
-      if (s is! String) {
-        throw FormatException("Items in sentences must be strings: $s");
+    String readString(String key) {
+      final value = json[key];
+      if (value == null) {
+        throw FormatException("Malformed json: missing $key key.");
       }
+      if (value is! String) {
+        throw FormatException(
+          "Malformed json: $key must be a string: $value",
+        );
+      }
+      return value;
     }
+
+    List<String> readStringList(String key) {
+      final value = json[key];
+      if (value == null) {
+        throw FormatException("Malformed json: missing $key key.");
+      }
+      if (value is! List) {
+        throw FormatException(
+          "Malformed json: $key must be a list: $value",
+        );
+      }
+      final result = <String>[];
+      for (final item in value) {
+        if (item is! String) {
+          throw FormatException(
+            "Items in $key must be strings: $item",
+          );
+        }
+        result.add(item);
+      }
+      return result;
+    }
+
     return ReadingExercise(
-      category: json["category"].toString(),
-      title: json["title"].toString(),
-      sentences: [ for (final s in json["sentences"]) s.toString() ],
+      category: readString("category"),
+      id: readString("id"),
+      title: readString("title"),
+      sentences: readStringList("sentences"),
     );
   }
 }
@@ -83,10 +97,10 @@ class SelectionManager {
   ];
 
   ExerciseManager exerciseManagerWith(String title) {
-    final List<List<String>> candidates = [
+    final List<ReadingExercise> candidates = [
       for (final item in data)
       if (item.title == title)
-      item.sentences
+      item
     ];
     if (candidates.isEmpty) {
       throw ArgumentError("Selected item doesn't exist: $title");
@@ -94,7 +108,11 @@ class SelectionManager {
     if (1 < candidates.length) {
       throw ArgumentError("Ambiguous selection: $title");
     }
-    return ExerciseManager(sentences: candidates.single);
+    final ReadingExercise match = candidates.single;
+    return ExerciseManager(
+      sentences: match.sentences,
+      exerciseId: match.id,
+      );
   }
 }
 
@@ -106,6 +124,7 @@ class ExerciseManager {
   // working is shuffled and used to iterate through exercises.
   final List<String> _originalSentences;
   final List<String> _workingSentences;
+  final String exerciseId;
   late List<String> _wordsInOrder;
   late List<int> _sourceBank;
   late List<int> _targetBank;
@@ -114,7 +133,8 @@ class ExerciseManager {
   late List<ProgressStatus> _progressLog;
 
   ExerciseManager({
-    required List<String> sentences
+    required List<String> sentences,
+    required this.exerciseId,
   }) : _originalSentences = [...sentences],
        _workingSentences = [...sentences]..shuffle()
   {
@@ -142,6 +162,8 @@ class ExerciseManager {
     if (_currentIndex < 0 || s.length <= _currentIndex) return null;
     return os.indexOf(s[_currentIndex]);
   }
+
+  String? get id => "${exerciseId}_$sentenceId";
 
   List<int> get sourceBank => _sourceBank;
   List<int> get targetBank => _targetBank;
@@ -183,11 +205,13 @@ class ExerciseManager {
   }
 
   // Extract words from the sentence using a regex.
-  // English alphabet, apostrophies within a word
+  // English alphabet plus Hungarian accented vowels,
+  // apostrophies within a word
   // matches: its, it's, Rock'n'Roll
   // non-matches: boys', 'em, we''re
   List<String> _extractWords(String text) =>
-    RegExp(r"[A-Za-z]+('[A-Za-z]+)*").allMatches(text).map((m) => m.group(0)!).toList();
+    RegExp(r"[A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű]+('[A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű]+)*")
+      .allMatches(text).map((m) => m.group(0)!).toList();
 
   List<int> _generateSourceBank(List<String> words) =>
     List.generate(words.length, (i) => i)..shuffle();
@@ -225,7 +249,7 @@ class ExerciseManager {
   void submit() {
     final tb = _targetBank;
     final wo = _wordsInOrder;
-    bool matchAt(int i) => wo[tb[i]] == wo[i];
+    bool matchAt(int i) => wo[tb[i]].toLowerCase() == wo[i].toLowerCase();
     bool result = [ for (int i=0; i<tb.length; i++) matchAt(i) ]
       .every((t) => t);
     if (result) {

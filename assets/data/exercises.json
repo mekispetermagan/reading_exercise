@@ -1,6 +1,114 @@
 [
     {
-        "category": "Western Old",
+        "category": "Bible",
+        "id": "bible01",
+        "title": "Gospel of Matthew",
+        "sentences": [
+            "Jesus said to them Come with me and I will teach you to catch people",
+            "You are like salt for the whole human race",
+            "You are like light for the whole world A city built on a hill cannot be hid",
+            "For your heart will always be where your riches are",
+            "Seek and you will find; knock and the door will be opened to you",
+            "Come to me all of you who are tired from carrying heavy loads",
+            "Let the children come to me and do not stop them",
+            "I will be with you always to the end of the age"
+        ]
+    },
+    {
+        "category": "Bible",
+        "id": "bible02",
+        "title": "Gospel of Mark",
+        "sentences": [
+            "The Kingdom of God is near",
+            "I have not come to call respectable people but outcasts",
+            "Don't be afraid only believe",
+            "Everything is possible for the person who has faith",
+            "Let the children come to me and do not stop them",
+            "This is impossible for human beings but not for God",
+            "Love the Lord your God with all your heart",
+            "Love your neighbor as you love yourself"
+        ]
+    },
+    {
+        "category": "Bible",
+        "id": "bible03",
+        "title": "Gospel of Luke",
+        "sentences": [
+            "For there is nothing that God cannot do",
+            "I am here with good news for you",
+            "Do for others just what you want them to do for you",
+            "Give to others and God will give to you",
+            "Knock and the door will be opened to you",
+            "Do not be afraid little flock",
+            "The Son of Man came to seek and to save the lost",
+            "Forgive them Father They don't know what they are doing"
+        ]
+    },
+    {
+        "category": "Bible",
+        "id": "bible04",
+        "title": "Gospel of John",
+        "sentences": [
+            "The light shines in the darkness and the darkness has never put it out",
+            "Those who come to me will never be hungry",
+            "Whoever follows me will have the light of life",
+            "I am the good shepherd who is willing to die for the sheep",
+            "Those who believe in me will live even though they die",
+            "I give you a new commandment: love one another",
+            "I am the way the truth and the life",
+            "I am the vine and you are the branches"
+        ]
+    },
+    {
+        "category": "Bible",
+        "id": "bible05",
+        "title": "Book of Genesis",
+        "sentences": [
+            "Then God commanded Let there be light and light appeared",
+            "God looked at everything he had made and he was very pleased",
+            "I am putting my bow in the clouds",
+            "I will bless you and make your name famous",
+            "And through you I will bless all the nations",
+            "Is anything too hard for the Lord",
+            "Do not be afraid; I am with you",
+            "You plotted evil against me but God turned it into good"
+        ]
+    },
+    {
+        "category": "Bible",
+        "id": "bible06",
+        "title": "Book of Psalms",
+        "sentences": [
+            "The Lord is my shepard I have everything I need",
+            "I will not be afraid Lord for you are with me",
+            "The Lord is my light and my salvation",
+            "Find out for yourself how good the Lord is",
+            "God is our shelter and strength",
+            "Stop fighting and know that I am God",
+            "This is the day of the Lord's victory let us be happy let us celebrate",
+            "Your word is a lamp to guide me and a light for my path"
+        ]
+    },
+    {
+        "category": "Bible",
+        "id": "bible07",
+        "title": "Book of Proverbs",
+        "sentences": [
+            "Stupid people have no respect for wisdom and refuse to learn",
+            "Never rely on what you think you know",
+            "Happy is anyone who becomes wise who comes to have understanding",
+            "Be careful how you think; your life is shaped by your thoughts",
+            "Hate stirs up trouble but love forgives all offenses",
+            "A gentle answer quiets anger",
+            "Ask the Lord to bless your plans",
+            "Friends always show their love"
+        ]
+    },
+
+
+    {
+        "category": "Western Songs",
+        "id": "western01",
         "title": "Boney M: Rivers of Babylon",
         "sentences": [
             "By the rivers of Babylon, there we sat down",
@@ -14,7 +122,8 @@
         ]
     },
     {
-        "category": "Western Old",
+        "category": "Western Songs",
+        "id": "western02",
         "title": "John Denver: Country Roads",
         "sentences": [
             "Almost Heaven West Virginia",
@@ -28,7 +137,8 @@
         ]
     },
     {
-        "category": "Western Old",
+        "category": "Western Songs",
+        "id": "western03",
         "title": "Bob Marley: One Love",
         "sentences": [
             "One love one heart",
@@ -42,7 +152,8 @@
         ]
     },
     {
-        "category": "Western Old",
+        "category": "Western Songs",
+        "id": "western04",
         "title": "Backstreet Boys: I Want It That Way",
         "sentences": [
             "You are my fire The one desire",
@@ -56,7 +167,8 @@
         ]
     },
     {
-        "category": "Western Old",
+        "category": "Western Songs",
+        "id": "western05",
         "title": "Ed Sheeran: Perfect",
         "sentences": [
             "Baby I'm dancing in the dark",
@@ -69,8 +181,11 @@
             "Darling you look perfect tonight"
         ]
     },
+
+
     {
-        "category": "Ugandan New",
+        "category": "Ugandan Songs",
+        "id": "ugandan01",
         "title": "Spice Diana: Siri Regular",
         "sentences": [
             "Omukwano guluma ng'akaddaliddali",
@@ -84,7 +199,8 @@
         ]
     },
     {
-        "category": "Ugandan New",
+        "category": "Ugandan Songs",
+        "id": "ugandan02",
         "title": "Alien Skin: Kapati",
         "sentences": [
             "Yenze champion girl omuzibu bambi",
@@ -98,7 +214,8 @@
         ]
     },
     {
-        "category": "Ugandan New",
+        "category": "Ugandan Songs",
+        "id": "ugandan03",
         "title": "Sheebah: Wesibadde",
         "sentences": [
             "Ononsonyiwa okulwayo silikawo",
@@ -112,7 +229,8 @@
         ]
     },
     {
-        "category": "Ugandan New",
+        "category": "Ugandan Songs",
+        "id": "ugandan04",
         "title": "Radio and Weasel: Neera",
         "sentences": [
             "Nze bulilunaku njagala byakunkwana",
@@ -126,7 +244,8 @@
         ]
     },
     {
-        "category": "Ugandan New",
+        "category": "Ugandan Songs",
+        "id": "ugandan05",
         "title": "Eddy Kenzo: Nkulowozaako",
         "sentences": [
             "Nkulowozaako",
@@ -140,7 +259,8 @@
         ]
     },
     {
-        "category": "Ugandan Old",
+        "category": "Ugandan Songs",
+        "id": "ugandan06",
         "title": "Chameleone: Mama Mia",
         "sentences": [
             "Tafadhali hao wa ma Bima wako na pesa",
@@ -154,7 +274,8 @@
         ]
     },
     {
-        "category": "Ugandan Old",
+        "category": "Ugandan Songs",
+        "id": "ugandan07",
         "title": "Paul Kafeero: Walumbe Zaaya",
         "sentences": [
             "Walumbe Zaaya atukola bwati",
@@ -168,7 +289,8 @@
         ]
     },
     {
-        "category": "Ugandan Old",
+        "category": "Ugandan Songs",
+        "id": "ugandan08",
         "title": "Philly Lutaaya: Born in Africa",
         "sentences": [
             "Don't worry where you are coming from",
@@ -180,6 +302,114 @@
             "No frontiers no barriers to dread",
             "Just doing what we choose to do"
         ]
+    },
+
+
+    {
+        "category": "Hungarian Songs",
+        "id": "hungarian01",
+        "title": "Quimby: Most múlik pontosan",
+        "sentences": [
+            "Most múlik pontosan",
+            "Engedem hadd menjen",
+            "szaladjon kifelé belőlem",
+            "gondoltam egyetlen",
+            "Nem vagy itt jó helyen",
+            "nem vagy való nekem",
+            "Villámlik mennydörög",
+            "ez tényleg szerelem "
+        ]
+    },
+    {
+        "category": "Hungarian Songs",
+        "id": "hungarian02",
+        "title": "Omega: Gyöngyhajú lány",
+        "sentences": [
+            "Mikor nagyon egyedül vagy",
+            "Lehull hozzád egy kis csillag",
+            "Hófehér gyöngyök vezessenek",
+            "Mint jó vándort fehér kövek",
+            "Igen, hív egy gyöngyhajú lány",
+            "Álmodtam, vagy igaz talán",
+            "Ránk vár gyöngye mögött",
+            "Ég és föld között"
+        ]
+    },
+    {
+        "category": "Hungarian Songs",
+        "id": "hungarian03",
+        "title": "Máté Péter: Ott állsz az út végén",
+        "sentences": [
+            "Hosszú hosszú évek emléke összefűz veled",
+            "Mennyi mennyi mindent köszönni tartozom neked",
+            "Tévúton járok  sajnos néha néha én",
+            "De bárhová megyek te ott állsz az út végén",
+            "Mindent megbocsájtasz és mindig jót akarsz nekem",
+            "Hogyha néha bántlak akkor is jó vagy velem",
+            "Tévúton járok sajnos néha néha én",
+            "De bárhová megyek te ott állsz az út végén"
+        ]
+    },
+    {
+        "category": "Hungarian Songs",
+        "id": "hungarian04",
+        "title": "Illés: Az utcán",
+        "sentences": [
+            "Néha furcsa hangulatban",
+            "Az utcát járom egymagamban",
+            "Nincsen semmihez se kedvem",
+            "De érzem azt hogy nincs ez rendben így",
+            "Megállok egy utcasarkon",
+            "Merre tovább melyik úton",
+            "Elindulok párat lépek",
+            "Á erre most miért menjek én"
+        ]
+    },
+    {
+        "category": "Hungarian Songs",
+        "id": "hungarian05",
+        "title": "Tankcsapda: Mennyország Tourist",
+        "sentences": [
+            "Majd rólad szólnak a hírek",
+            "Veled van tele a sajtó",
+            "Aki a pokolra kíván jutni annak",
+            "Balra a második ajtó",
+            "De ha a Szent Péter szigetekre már",
+            "Be van fizetve az útja",
+            "Önnek a Mennyország Tourist",
+            "A legjobb szolgáltatást nyújtja"
+        ]
+    },
+    {
+        "category": "Hungarian Songs",
+        "id": "hungarian06",
+        "title": "Bródy János: Ha én rózsa volnék",
+        "sentences": [
+            "Ha én rózsa volnék nem csak egyszer nyilnék",
+            "Minden évben négyszer virágba borulnék",
+            "Nyílnék a fiúnak nyílnék én a lánynak",
+            "Az igaz szerelemnek és az elmúlásnak",
+            "Ha én kapu volnék mindig nyitva állnék",
+            "Akárhonnan jönne bárkit beengednék",
+            "Nem kérdezném tőle hát téged ki küldött",
+            "Akkor lennék boldog ha mindenki eljött"
+        ]
+    },
+    {
+        "category": "Hungarian Songs",
+        "id": "hungarian07",
+        "title": "Kispál: Ha az életben",
+        "sentences": [
+            "Ha az életben nincs már több móka",
+            "Meghalunk mintha nem volna",
+            "Több dolgunk a világon s édes",
+            "Lenne a halál hát ilyen értelembe",
+            "Énekeljük el azt hogy vége",
+            "Nem járunk ki többet rétre",
+            "Nem úszunk többet a strandon és",
+            "Nem borozunk már többet a gangon"
+        ]
     }
 ]
+
 

@@ -6,48 +6,45 @@ import "widgets.dart";
 /// user starts the game via [onStart].
 class TitleScreen extends StatelessWidget {
   final VoidCallback? onStart;
-  const TitleScreen({required this.onStart, super.key});
+  const TitleScreen({
+    required this.onStart,
+    super.key});
 
   @override
   Widget build(BuildContext context) {
   final ColorScheme cs = Theme.of(context).colorScheme;
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: SizedBox.expand(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
+    return ScreenShell(
+      onRestart: null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
 
-                // title
-                Text(
-                  "Read every day!",
-                  style: TextStyle(
-                    fontSize: 36,
-                    color: cs.onSurface,
-                  ),
-                ),
-
-                // titleimage
-                Image.asset(
-                  // for Chrome debugging:
-                  // 'images/reading_girl.png',
-                  // for apk build:
-                  'assets/images/reading_girl.png',
-                  width: 180,
-                ),
-
-                // startbutton
-                PrimaryActionButton(
-                  text: "Start",
-                  onPressed: onStart
-                ),
-              ],
+          // title
+          Text(
+            "Read every day!",
+            style: TextStyle(
+              fontSize: 36,
+              color: cs.onSurface,
             ),
           ),
-        ),
+
+          // titleimage
+          Image.asset(
+            // for Chrome debugging:
+            // 'images/reading_girl.png',
+            // for apk build:
+            'assets/images/reading_girl.png',
+            width: 180,
+          ),
+
+          // startbutton
+          PrimaryActionButton(
+            text: "Start",
+            nullText: "Wait...",
+            onPressed: onStart
+          ),
+        ],
       ),
     );
   }
@@ -77,19 +74,22 @@ class ErrorScreen extends StatelessWidget {
   }
 }
 
-class CategorySelectScreen extends StatelessWidget {
+class SelectCategoryScreen extends StatelessWidget {
   final List<String> categories;
   final void Function(String) onSubmit;
+  final VoidCallback? onRestart;
 
-  const CategorySelectScreen({
+  const SelectCategoryScreen({
     required this.categories,
     required this.onSubmit,
+    this.onRestart,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return PageFrame(
+    return ScreenShell(
+      onRestart: onRestart,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,30 +105,39 @@ class CategorySelectScreen extends StatelessWidget {
   }
 }
 
-class ExerciseSelectScreen extends StatelessWidget {
+class SelectExerciseScreen extends StatelessWidget {
   final List<String> titles;
   final void Function(String) onSubmit;
+  final VoidCallback onRestart;
 
-  const ExerciseSelectScreen({
+  const SelectExerciseScreen({
     required this.titles,
     required this.onSubmit,
+    required this.onRestart,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return PageFrame(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          for (final title in titles)
-          PrimaryActionButton(
-            text: title,
-            onPressed: () => onSubmit(title),
-            fontSize: 18,
-          )
-        ],
+    return ScreenShell(
+      onRestart: onRestart,
+      child: ListView.separated(
+        padding: EdgeInsets.zero,
+        itemCount: titles.length,
+      itemBuilder: (context, index) => PrimaryActionButton(
+        text: titles[index],
+        onPressed: () => onSubmit(titles[index]),
+        fontSize: 18,
+      ),
+      separatorBuilder: (context, index) => const SizedBox(height: 24),
+        // children: <Widget>[
+        //   for (final title in titles)
+        //   PrimaryActionButton(
+        //     text: title,
+        //     onPressed: () => onSubmit(title),
+        //     fontSize: 18,
+        //   )
+        // ],
       ),
     );
   }
@@ -144,6 +153,7 @@ class ExerciseScreen extends StatelessWidget {
   final List<ProgressStatus> progressLog;
   final int score;
   final int current;
+  final VoidCallback onRestart;
 
   const ExerciseScreen({
     required this.sourceCards,
@@ -153,13 +163,15 @@ class ExerciseScreen extends StatelessWidget {
     required this.progressLog,
     required this.score,
     required this.current,
+    required this.onRestart,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return PageFrame(
+    return ScreenShell(
+      onRestart: onRestart,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -191,15 +203,8 @@ class ExerciseScreen extends StatelessWidget {
 
           // bottom bar
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "Score: $score",
-                style: TextStyle(
-                  fontSize: 24,
-                  color: colorScheme.onSurface,
-                  ),
-              ),
               IconButton(
                 onPressed: onPlaySentence,
                 icon: const Icon(Icons.volume_up),
@@ -234,14 +239,15 @@ class ResultScreen extends StatelessWidget {
 
   const ResultScreen({
     required this.score,
-    required this.maxScore, // will be used for progress bar
+    required this.maxScore,
     required this.onRestart,
     super.key});
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return PageFrame(
+    return ScreenShell(
+      onRestart: onRestart,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,

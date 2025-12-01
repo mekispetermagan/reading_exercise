@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/foundation.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:convert';
 import 'reading_logic.dart';
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _speechPlayer.play(AssetSource("audio/intro.mp3"));
+    // _speechPlayer.play(AssetSource("audio/sentences/western02_2.mp3"));
     _loadData('assets/data/exercises.json');
   }
 
@@ -101,12 +103,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onSelectExercise(String title, SelectionManager manager) {
+    final ExerciseManager exerciseManager = manager.exerciseManagerWith(title);
+    _onPlaySentence(exerciseManager.id);
     setState(() =>
       _phase = ExercisePhase(
         step: ExerciseStep.preparingAnswer,
-        manager: manager.exerciseManagerWith(title),
+        manager: exerciseManager,
       )
     );
+
   }
 
   void _onMoveCard(ExerciseManager manager, int id) {
@@ -148,6 +153,7 @@ class _HomePageState extends State<HomePage> {
       ));
     } else {
       manager.nextExercise();
+      _onPlaySentence(manager.id);
       setState(() => _phase = ExercisePhase(
         step: ExerciseStep.preparingAnswer,
         manager: manager
@@ -164,13 +170,23 @@ class _HomePageState extends State<HomePage> {
 
   );
 
-  void _onPlaySentence(int id) {
-    _speechPlayer.stop();
-    _speechPlayer.play(AssetSource("audio/$id.mp3"));
+  Future<void> _onPlaySentence(String? id) async {
+    if (kDebugMode) {
+      debugPrint("id: $id");
+    }
+    if (id == null) return;
+    try {
+      await _speechPlayer.stop();
+      _speechPlayer.play(AssetSource("audio/sentences/$id.mp3"));
+    } catch(e) {
+      if (kDebugMode) {
+          debugPrint("error message: $e");
+      }
+    }
   }
 
-  void _playEffect(String name) {
-    _effectPlayer.stop();
+  Future<void> _playEffect(String name) async {
+    await _effectPlayer.stop();
     _effectPlayer.play(AssetSource("audio/$name"));
   }
 
@@ -185,13 +201,15 @@ class _HomePageState extends State<HomePage> {
         return TitleScreen(onStart: () => _onStart(data));
       case SelectionPhase(step: final step, manager: final manager):
         return switch (step) {
-          SelectionStep.categorySelection => CategorySelectScreen(
+          SelectionStep.categorySelection => SelectCategoryScreen(
             categories: manager.categories,
             onSubmit: (String category) =>_onSelectCategory(category, manager),
+            onRestart: null,
           ),
-          SelectionStep.exerciseSelection => ExerciseSelectScreen(
+          SelectionStep.exerciseSelection => SelectExerciseScreen(
             titles: manager.titles,
             onSubmit: (String title) => _onSelectExercise(title, manager),
+            onRestart: _onRestart,
           )
         };
       case ExercisePhase(step: final step, manager: final manager): {
@@ -206,20 +224,22 @@ class _HomePageState extends State<HomePage> {
           ExerciseStep.preparingAnswer => ExerciseScreen(
             sourceCards: cards(manager.sourceBank, true),
             targetCards: cards(manager.targetBank, true),
-            onPlaySentence: () => _onPlaySentence(manager.sentenceId!),
+            onPlaySentence: () => _onPlaySentence(manager.id),
             onSubmit: null,
             progressLog: manager.progressLog,
             score: manager.score,
             current: manager.current,
+            onRestart: _onRestart,
           ),
           ExerciseStep.readyToSubmit => ExerciseScreen(
             sourceCards: cards(manager.sourceBank, true),
             targetCards: cards(manager.targetBank, true),
-            onPlaySentence: () => _onPlaySentence(manager.sentenceId!),
+            onPlaySentence: () => _onPlaySentence(manager.id),
             onSubmit: () => _onSubmitAnswer(manager),
             progressLog: manager.progressLog,
             score: manager.score,
             current: manager.current,
+            onRestart: _onRestart,
           ),
           ExerciseStep.correctFeedback => ExerciseScreen(
             sourceCards: cards(manager.sourceBank, false),
@@ -228,6 +248,7 @@ class _HomePageState extends State<HomePage> {
             onSubmit: null,
             progressLog: manager.progressLog,
             score: manager.score,
+            onRestart: _onRestart,
             current: manager.current,
           ),
           ExerciseStep.incorrectFeedback => ExerciseScreen(
@@ -238,6 +259,7 @@ class _HomePageState extends State<HomePage> {
             progressLog: manager.progressLog,
             score: manager.score,
             current: manager.current,
+            onRestart: _onRestart,
           ),
         };
       }
